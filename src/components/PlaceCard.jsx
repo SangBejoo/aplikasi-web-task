@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
 import { Card, Typography, Box, Modal } from '@mui/material';
-import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PersonIcon from '@mui/icons-material/Person';
 
-const PlaceCard = ({ place }) => {
+// Create custom taxi icon for drivers
+const driverIcon = new L.Icon({
+    iconUrl: 'https://img.icons8.com/?size=100&id=61030&format=png&color=000000',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32],
+    // Fallback to taxi material icon
+    className: 'driver-marker-fallback taxi-icon'
+});
+
+const PlaceCard = ({ place, supplies }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const maxCapacity = 10;
     const occupancyRate = ((place.total || 0) / maxCapacity) * 100;
@@ -20,6 +31,17 @@ const PlaceCard = ({ place }) => {
             const [lng, lat] = coord.trim().split(' ');
             return [parseFloat(lat), parseFloat(lng)];
         });
+    };
+
+    // Get center position for map from first driver or polygon
+    const getMapCenter = () => {
+        if (place.driver_locations && place.driver_locations.length > 0) {
+            const firstDriver = place.driver_locations[0];
+            return [firstDriver.latitude, firstDriver.longitude];
+        }
+        
+        const polygonCoords = getPolygonCoordinates();
+        return polygonCoords[0] || [-6.2145, 106.8334];
     };
 
     return (
@@ -72,8 +94,8 @@ const PlaceCard = ({ place }) => {
                     
                     <Box sx={{ height: 400, mt: 2 }}>
                         <MapContainer
-                            center={getPolygonCoordinates()[0] || [-6.2145, 106.8334]}
-                            zoom={16}
+                            center={getMapCenter()}
+                            zoom={17}
                             style={{ height: '100%', width: '100%' }}
                         >
                             <TileLayer
@@ -85,10 +107,42 @@ const PlaceCard = ({ place }) => {
                                     positions={getPolygonCoordinates()}
                                     pathOptions={{
                                         color: occupancyClass === 'high' ? 'red' :
-                                               occupancyClass === 'medium' ? 'orange' : 'green'
+                                               occupancyClass === 'medium' ? 'orange' : 'green',
+                                        fillOpacity: 0.3
                                     }}
                                 />
                             )}
+                            {supplies?.map((supply) => (
+                                <Marker
+                                    key={supply.fleet_number}
+                                    position={[supply.latitude, supply.longitude]}
+                                    icon={driverIcon}
+                                >
+                                    <Popup>
+                                        <Box>
+                                            <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                                                {supply.fleet_number}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                Driver: {supply.driver_id}
+                                            </Typography>
+                                        </Box>
+                                    </Popup>
+                                </Marker>
+                            ))}
+                            {place.driver_locations?.map((driver) => (
+                                <Marker
+                                    key={driver.driver_id}
+                                    position={[driver.latitude, driver.longitude]}
+                                    icon={driverIcon}
+                                >
+                                    <Popup>
+                                        <Typography variant="body2">
+                                            {driver.driver_id}
+                                        </Typography>
+                                    </Popup>
+                                </Marker>
+                            ))}
                         </MapContainer>
                     </Box>
 

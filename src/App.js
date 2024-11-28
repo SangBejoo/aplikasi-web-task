@@ -7,6 +7,7 @@ import './utils/leaflet-icons';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PersonIcon from '@mui/icons-material/Person';
+import DashboardMap from './components/DashboardMap';  // Add this import
 
 const API_BASE_URL = 'http://localhost:8001/v1';
 
@@ -15,35 +16,37 @@ function App() {
   const [summary, setSummary] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
+  const [supplies, setSupplies] = useState([]);
+  const [allSupplies, setAllSupplies] = useState([]);
 
-  const fetchPlaces = async () => {
+  // Combined fetch function for all data
+  const fetchAllData = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/monitoring`);
-      const { data } = await response.json();
-      setPlaces(data || []);
-    } catch (error) {
-      console.error('Failed to fetch places:', error);
-    }
-  };
+      // Fetch places
+      const placesResponse = await fetch(`${API_BASE_URL}/monitoring`);
+      const { data: placesData } = await placesResponse.json();
+      setPlaces(placesData || []);
 
-  const fetchSummary = async () => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/monitoring/summary`);
-      const { summary } = await response.json();
-      setSummary(summary);
+      // Fetch summary
+      const summaryResponse = await fetch(`${API_BASE_URL}/monitoring/summary`);
+      const { summary: summaryData } = await summaryResponse.json();
+      setSummary(summaryData);
+
+      // Fetch supplies
+      const suppliesResponse = await fetch(`${API_BASE_URL}/supplies`);
+      const { supplies: suppliesData } = await suppliesResponse.json();
+      setAllSupplies(suppliesData || []);
     } catch (error) {
-      console.error('Failed to fetch summary:', error);
+      console.error('Failed to fetch data:', error);
     }
   };
 
   useEffect(() => {
-    fetchPlaces();
-    fetchSummary();
+    // Initial fetch
+    fetchAllData();
 
-    const intervalId = setInterval(() => {
-      fetchPlaces();
-      fetchSummary();
-    }, 5 * 60 * 1000); // 5 minutes
+    // Set up 5-minute interval for all data
+    const intervalId = setInterval(fetchAllData, 5 * 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -92,6 +95,11 @@ function App() {
         <Typography variant="h4" gutterBottom>
           🚗 Parking Space Monitor
         </Typography>
+
+        {/* Add the big map dashboard */}
+        <Box sx={{ height: '70vh', mb: 3 }}>
+          <DashboardMap places={places} supplies={allSupplies} />
+        </Box>
         
         <SearchSort 
           searchTerm={searchTerm}
@@ -126,7 +134,7 @@ function App() {
           mt: 3 
         }}>
           {filteredAndSortedPlaces.map(place => (
-            <PlaceCard key={place.id} place={place} />
+            <PlaceCard key={place.id} place={place} supplies={(allSupplies || []).filter(s => s?.place_id === place.place_id)} />
           ))}
         </Box>
       </Box>

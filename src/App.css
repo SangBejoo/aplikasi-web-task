@@ -91,3 +91,49 @@
 .summary-section .MuiTypography-root {
   margin-bottom: 8px;
 }
+
+/* Driver marker fallback using material icons */
+.driver-marker-fallback {
+    background: none !important;
+}
+
+.driver-marker-fallback::before {
+    content: 'directions_car';
+    font-family: 'Material Icons';
+    font-size: 32px;
+    color: #1976d2;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+}
+
+.driver-marker-fallback.taxi-icon::before {
+    content: 'local_taxi';  /* Changed to taxi icon */
+    font-family: 'Material Icons';
+    font-size: 32px;
+    color: #1976d2;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+}
+
+/* Marker popup styles */
+.leaflet-popup-content {
+    margin: 8px;
+    text-align: center;
+    min-width: 200px;
+    padding: 8px;
+}
+
+.leaflet-popup-content p {
+    margin: 0;
+}
+
+.leaflet-popup-content .MuiTypography-subtitle2 {
+    margin-bottom: 4px;
+}
+
+.leaflet-popup-content .MuiTypography-body2 {
+    margin: 2px 0;
+}
+
+/* Taxi marker styles */
+.taxi-marker {
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.5));
+}
