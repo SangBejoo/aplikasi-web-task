@@ -1,0 +1,340 @@
+:root {
+    --primary: #2196f3;
+    --secondary: #1976d2;
+    --background: #f5f5f5;
+    --card: #ffffff;
+    --text: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--background);
+    color: var(--text);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+nav {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+nav h1 {
+    margin-bottom: 20px;
+    color: var(--primary);
+}
+
+#stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: var(--background);
+    border-radius: 8px;
+}
+
+.stat-box .material-icons {
+    font-size: 2.5rem;
+    color: var(--primary);
+}
+
+main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.monitoring-section, .supplies-section {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: var(--secondary);
+}
+
+#monitoringGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.place-card {
+    background: var(--background);
+    padding: 15px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    display: grid;
+    gap: 10px;
+}
+
+.place-card:hover {
+    transform: translateY(-2px);
+}
+
+.place-card .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.place-card .status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.place-card .status.active {
+    background: #e3f2fd;
+    color: var(--primary);
+}
+
+.place-card .details {
+    display: grid;
+    gap: 8px;
+}
+
+.place-card .driver-list {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #eee;
+    font-size: 13px;
+}
+
+#suppliesLog {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.supply-update {
+    padding: 10px;
+    border-left: 4px solid var(--primary);
+    background: var(--background);
+    margin-bottom: 10px;
+    border-radius: 0 8px 8px 0;
+    display: grid;
+    gap: 5px;
+}
+
+.supply-update .timestamp {
+    color: #666;
+    font-size: 12px;
+}
+
+.supply-update .details {
+    display: flex;
+    gap: 15px;
+}
+
+.monitoring-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 14px;
+}
+
+.refresh-time {
+    color: #666;
+    font-size: 14px;
+}
+
+.monitoring-logs {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.log-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.log-filters button {
+    padding: 6px 12px;
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.log-filters button.active {
+    background: var(--primary);
+    color: white;
+}
+
+.sort-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.sort-controls label {
+    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.sort-select {
+    padding: 6px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #f8f8f8;
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px;
+}
+
+.sort-select:hover {
+    border-color: var(--primary);
+}
+
+.sort-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(33,150,243,0.1);
+}
+
+.sort-direction {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.2s ease;
+}
+
+.sort-direction:hover {
+    background: rgba(33,150,243,0.1);
+    color: var(--primary);
+}
+
+.sort-direction .material-icons {
+    transition: transform 0.2s ease;
+}
+
+.sort-direction.descending .material-icons {
+    transform: rotate(180deg);
+}
+
+.sort-btn {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.sort-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.sort-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.sort-btn.desc::after {
+    content: " ↓";
+}
+
+.sort-btn.asc::after {
+    content: " ↑";
+}
+
+.place-card {
+    transition: all 0.3s ease-out;
+}
+
+.place-card.sorting {
+    transform: scale(0.98);
+    opacity: 0.8;
+}
+
+.activity-log {
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: white;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+}
+
+.driver-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.driver-tag {
+    background: #f5f5f5;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+}

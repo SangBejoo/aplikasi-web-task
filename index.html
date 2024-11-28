@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Space Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <h1>🚗 Parking Space Monitor</h1>
+            <div id="stats">
+                <div class="stat-box">
+                    <span class="material-icons">local_parking</span>
+                    <div>
+                        <h3>Total Spaces</h3>
+                        <p id="totalSpaces">0</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <span class="material-icons">directions_car</span>
+                    <div>
+                        <h3>Active Vehicles</h3>
+                        <p id="activeVehicles">0</p>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <span class="material-icons">person</span>
+                    <div>
+                        <h3>Active Drivers</h3>
+                        <p id="activeDrivers">0</p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <main>
+            <div class="monitoring-section">
+                <h2>Live Monitoring</h2>
+                <div class="monitoring-header">
+                    <div class="search-box">
+                        <input type="text" id="searchPlace" placeholder="Search places...">
+                    </div>
+                    <div class="sort-controls">
+                        <label>Sort by:</label>
+                        <select id="sortBy" class="sort-select">
+                            <option value="name">Name</option>
+                            <option value="occupancy">Occupancy Rate</option>
+                            <option value="drivers">Active Drivers</option>
+                            <option value="available">Available Spaces</option>
+                        </select>
+                        <button id="sortOrder" class="sort-direction">
+                            <span class="material-icons">sort</span>
+                        </button>
+                    </div>
+                    <div class="refresh-time">Last update: <span id="lastUpdate">Never</span></div>
+                </div>
+                <div id="monitoringGrid"></div>
+            </div>
+            
+            <div class="monitoring-section">
+                <h2>Activity Log</h2>
+                <div id="activityLog" class="activity-log">
+                    <div id="monitoringSummary" class="monitoring-summary"></div>
+                    <div id="activityContainer"></div>
+                </div>
+                <div id="suppliesLog" class="animated-log"></div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="app.js"></script>
+</body>
+</html>

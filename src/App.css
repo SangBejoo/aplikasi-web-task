@@ -36,3 +36,58 @@
     transform: rotate(360deg);
   }
 }
+
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status.high { background: #ffebee; color: #c62828; }
+.status.medium { background: #fff3e0; color: #ef6c00; }
+.status.low { background: #e8f5e9; color: #2e7d32; }
+
+.driver-tag {
+  background: #f5f5f5;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.search-sort-container {
+  margin-bottom: 20px;
+}
+
+.MuiFormControl-root {
+  background-color: white;
+}
+
+.MuiInputBase-root {
+  border-radius: 4px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  grid-column: 1 / -1;
+}
+
+.summary-section {
+  padding: 16px;
+  background: var(--card);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.summary-section h6 {
+  margin-bottom: 16px;
+}
+
+.summary-section .MuiTypography-root {
+  margin-bottom: 8px;
+}
