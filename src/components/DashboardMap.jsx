@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Polygon, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon, Popup } from 'react-leaflet';
+import DriftMarker from 'react-leaflet-drift-marker';
 import L from 'leaflet';
 import { Typography, Box } from '@mui/material';
 import 'leaflet/dist/leaflet.css';
@@ -70,12 +71,14 @@ const DashboardMap = ({ places, supplies }) => {
                 </Polygon>
             ))}
 
-            {/* Render taxi supply markers */}
+            {/* Render taxi supply markers with smooth drift animation */}
             {Array.isArray(supplies) && supplies.map(supply => (
-                <Marker
+                <DriftMarker
                     key={supply.fleet_number}
                     position={[supply.latitude, supply.longitude]}
                     icon={taxiIcon}
+                    duration={5000} // 5 seconds animation
+                    keepAtCenter={false}
                 >
                     <Popup>
                         <Box>
@@ -90,7 +93,7 @@ const DashboardMap = ({ places, supplies }) => {
                             </Typography>
                         </Box>
                     </Popup>
-                </Marker>
+                </DriftMarker>
             ))}
         </MapContainer>
     );

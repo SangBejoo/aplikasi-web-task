@@ -45,8 +45,8 @@ function App() {
     // Initial fetch
     fetchAllData();
 
-    // Set up 5-minute interval for all data
-    const intervalId = setInterval(fetchAllData, 5 * 60 * 1000);
+    // Set up 10-second interval for all data
+    const intervalId = setInterval(fetchAllData, 10000); // Changed to 10 seconds
 
     return () => clearInterval(intervalId);
   }, []);
