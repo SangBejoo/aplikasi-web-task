@@ -6,6 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import PersonIcon from '@mui/icons-material/Person';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 // Create custom taxi icon for drivers
 const driverIcon = new L.Icon({
@@ -42,6 +43,16 @@ const PlaceCard = ({ place, supplies }) => {
         
         const polygonCoords = getPolygonCoordinates();
         return polygonCoords[0] || [-6.2145, 106.8334];
+    };
+
+    // Format date to Indonesian timezone and format
+    const formatEntryTime = (isoString) => {
+        const date = new Date(isoString);
+        return new Intl.DateTimeFormat('id-ID', {
+            timeZone: 'Asia/Jakarta',
+            dateStyle: 'short',
+            timeStyle: 'short'
+        }).format(date);
     };
 
     return (
@@ -161,11 +172,42 @@ const PlaceCard = ({ place, supplies }) => {
                                 <Typography variant="h6">
                                     Active Drivers ({place.driver.length})
                                 </Typography>
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                                <Box sx={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
+                                    gap: 2, 
+                                    mt: 1 
+                                }}>
                                     {place.driver.map(driver => (
-                                        <Box key={driver} className="driver-tag">
-                                            <PersonIcon sx={{ mr: 1 }} />
-                                            {driver}
+                                        <Box 
+                                            key={driver} 
+                                            sx={{
+                                                p: 1.5,
+                                                bgcolor: 'background.default',
+                                                borderRadius: 1,
+                                                border: '1px solid',
+                                                borderColor: 'divider'
+                                            }}
+                                        >
+                                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                                <PersonIcon sx={{ mr: 1 }} />
+                                                <Typography variant="subtitle2">
+                                                    {driver}
+                                                </Typography>
+                                            </Box>
+                                            {place.driver_entry_times?.[driver] && (
+                                                <Box sx={{ 
+                                                    display: 'flex', 
+                                                    alignItems: 'center',
+                                                    color: 'text.secondary',
+                                                    fontSize: '0.875rem'
+                                                }}>
+                                                    <AccessTimeIcon sx={{ mr: 1, fontSize: '1rem' }} />
+                                                    <Typography variant="body2">
+                                                        Masuk: {formatEntryTime(place.driver_entry_times[driver])}
+                                                    </Typography>
+                                                </Box>
+                                            )}
                                         </Box>
                                     ))}
                                 </Box>

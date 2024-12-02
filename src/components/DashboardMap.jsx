@@ -4,6 +4,7 @@ import DriftMarker from 'react-leaflet-drift-marker';
 import L from 'leaflet';
 import { Typography, Box, Modal } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import 'leaflet/dist/leaflet.css';
 
 // Custom taxi icon for supplies
@@ -48,6 +49,16 @@ const DashboardMap = ({ places, supplies }) => {
             const [lng, lat] = coord.trim().split(' ');
             return [parseFloat(lat), parseFloat(lng)];
         });
+    };
+
+    // Add format function for entry times
+    const formatEntryTime = (isoString) => {
+        const date = new Date(isoString);
+        return new Intl.DateTimeFormat('id-ID', {
+            timeZone: 'Asia/Jakarta',
+            dateStyle: 'short',
+            timeStyle: 'short'
+        }).format(date);
     };
 
     return (
@@ -108,6 +119,23 @@ const DashboardMap = ({ places, supplies }) => {
                                     <Typography variant="body2">
                                         Active Drivers: {place.driver?.length || 0}
                                     </Typography>
+                                    {place.driver && place.driver.length > 0 && (
+                                        <Box sx={{ mt: 1, fontSize: '0.875rem' }}>
+                                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                                                Recent Entries:
+                                            </Typography>
+                                            {place.driver.slice(0, 3).map(driver => (
+                                                <Box key={driver} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                    <AccessTimeIcon sx={{ fontSize: '0.875rem' }} />
+                                                    <Typography variant="body2">
+                                                        {driver}: {place.driver_entry_times?.[driver] ? 
+                                                            formatEntryTime(place.driver_entry_times[driver]) : 
+                                                            'N/A'}
+                                                    </Typography>
+                                                </Box>
+                                            ))}
+                                        </Box>
+                                    )}
                                 </Box>
                             </Popup>
                         </Polygon>
@@ -219,11 +247,42 @@ const DashboardMap = ({ places, supplies }) => {
                                         <Typography variant="h6">
                                             Active Drivers ({selectedPlace.driver.length})
                                         </Typography>
-                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                                        <Box sx={{ 
+                                            display: 'grid', 
+                                            gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', 
+                                            gap: 2, 
+                                            mt: 1 
+                                        }}>
                                             {selectedPlace.driver.map(driver => (
-                                                <Box key={driver} className="driver-tag">
-                                                    <PersonIcon sx={{ mr: 1 }} />
-                                                    {driver}
+                                                <Box 
+                                                    key={driver} 
+                                                    sx={{
+                                                        p: 1.5,
+                                                        bgcolor: 'background.default',
+                                                        borderRadius: 1,
+                                                        border: '1px solid',
+                                                        borderColor: 'divider'
+                                                    }}
+                                                >
+                                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                                        <PersonIcon sx={{ mr: 1 }} />
+                                                        <Typography variant="subtitle2">
+                                                            {driver}
+                                                        </Typography>
+                                                    </Box>
+                                                    {selectedPlace.driver_entry_times?.[driver] && (
+                                                        <Box sx={{ 
+                                                            display: 'flex', 
+                                                            alignItems: 'center',
+                                                            color: 'text.secondary',
+                                                            fontSize: '0.875rem'
+                                                        }}>
+                                                            <AccessTimeIcon sx={{ mr: 1, fontSize: '1rem' }} />
+                                                            <Typography variant="body2">
+                                                                Masuk: {formatEntryTime(selectedPlace.driver_entry_times[driver])}
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
                                                 </Box>
                                             ))}
                                         </Box>
